@@ -105,7 +105,7 @@
             font-size: 2.2rem;
             font-weight: 900;
             letter-spacing: 4px;
-            color: #f5b042;
+            color: #3b82f6;
             text-shadow: 0 0 5px #f5b042;
         }
         .heavy-cert-header .sub {
@@ -249,7 +249,77 @@
         footer { text-align: center; margin-top: 3rem; border-top: 1px solid #232B3E; padding-top: 1.5rem; font-size: 0.75rem; }
         .protected-link-area { margin-top: 1rem; text-align: center; }
         .protected-link-btn { background: #1E293B; border: 1px solid #8B5CF6; border-radius: 40px; padding: 0.5rem 1rem; cursor: pointer; color: white; }
-        @media (max-width: 700px) { .modern-nav { flex-direction: column; gap: 0.8rem; } .nav-links { justify-content: center; } }
+        
+        /* Existing media query (keep as is) */
+        @media (max-width: 700px) {
+            .modern-nav { flex-direction: column; gap: 0.8rem; }
+            .nav-links { justify-content: center; }
+        }
+        
+        /* ========== ADDITIONAL MOBILE RESPONSIVE FIXES (NO EXISTING STYLES CHANGED) ========== */
+        @media (max-width: 640px) {
+            /* Main container padding reduce */
+            .main-app { padding: 0.8rem; }
+            /* Certificate card padding reduce */
+            .heavy-cert { padding: 1rem; margin: 0.5rem; }
+            .heavy-cert-header h1 { font-size: 1.4rem; letter-spacing: 2px; }
+            .heavy-cert-header .sub { font-size: 0.7rem; }
+            /* Profile section stack vertically */
+            .cert-profile { flex-direction: column; text-align: center; gap: 0.8rem; padding: 1rem; }
+            .cert-avatar { width: 70px; height: 70px; margin: 0 auto; }
+            .cert-profile-info h2 { font-size: 1.2rem; }
+            .cert-profile-info .role { font-size: 0.7rem; }
+            .cert-profile-info .project { font-size: 0.65rem; }
+            /* Power items */
+            .power-item { padding: 0.7rem; }
+            .power-item h3 { font-size: 0.9rem; gap: 4px; }
+            .power-item p { font-size: 0.75rem; }
+            .power-list { gap: 0.8rem; margin: 1rem 0; }
+            /* Footer */
+            .cert-footer-heavy { flex-direction: column; text-align: center; gap: 0.5rem; }
+            .signature-heavy { text-align: center; }
+            .sign-line { width: 120px; margin: 5px auto 0; }
+            /* Grids */
+            .grid-heavy { grid-template-columns: 1fr; gap: 1rem; }
+            .auth-card { padding: 1rem; }
+            .auth-card h3 { font-size: 1rem; }
+            .auth-card p { font-size: 0.8rem; }
+            /* Owner cards */
+            .owner-card-full { padding: 1rem; }
+            .owner-card-full h3 { font-size: 1rem; }
+            .owner-card-full p { font-size: 0.8rem; }
+            /* Projects grid */
+            .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .project-item { padding: 1rem; }
+            .project-item h3 { font-size: 1rem; }
+            /* Social row */
+            .social-row { flex-direction: column; gap: 0.8rem; align-items: center; }
+            .social-heavy { padding: 0.5rem 1rem; font-size: 0.8rem; }
+            /* Forms */
+            .collab-form, .track-section, .admin-panel { padding: 1rem; margin-bottom: 1rem; }
+            .form-group input, .form-group textarea { padding: 0.6rem 1rem; font-size: 0.8rem; }
+            .submit-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+            /* Requests table */
+            .requests-table { font-size: 0.65rem; }
+            .requests-table th, .requests-table td { padding: 0.4rem; }
+            .reply-area { flex-direction: column; }
+            .reply-input { width: 100%; }
+            /* Footer */
+            footer { font-size: 0.6rem; margin-top: 1.5rem; }
+            .protected-link-btn { padding: 0.3rem 0.7rem; font-size: 0.7rem; }
+            /* Badge source */
+            .badge-source { font-size: 0.6rem; padding: 0.15rem 0.6rem; }
+            /* VIP badge */
+            .vip-badge { font-size: 0.6rem; }
+        }
+        
+        /* Extra small devices (480px and below) */
+        @media (max-width: 480px) {
+            .heavy-cert-header h1 { font-size: 1.2rem; }
+            .cert-profile-info h2 { font-size: 1rem; }
+            .power-item h3 { font-size: 0.8rem; }
+            .power-item p { font-size: 0.7rem; }
+        }
     </style>
 </head>
 <body>
@@ -280,7 +350,7 @@
         </div>
     </div>
 
-    <!-- PAGE 1: CERTIFICATE (REVISED - Third-party issued, no self-claim) -->
+    <!-- PAGE 1: CERTIFICATE -->
     <div id="pageCert" class="page active-page">
         <div class="heavy-cert">
             <div class="heavy-cert-header">
@@ -290,7 +360,7 @@
             </div>
             <div class="cert-profile">
                 <div class="cert-avatar">
-                    <img src="Screenshot 2026-05-24 031757.png" alt="Anas Farooq" id="profileImg">
+                    <img src="Screenshot 2026-05-24 031757.png" alt="Anas Farooq" id="profileImg" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?background=8B5CF6&color=fff&bold=true&size=90&name=Anas+Farooq&length=2';">
                 </div>
                 <div class="cert-profile-info">
                     <h2>ANAS FAROOQ</h2>
@@ -314,7 +384,7 @@
         </div>
     </div>
 
-    <!-- PAGE 2: TECHNICAL AUTHORITY (UPDATED with certificate's 6 powers) -->
+    <!-- PAGE 2: TECHNICAL AUTHORITY -->
     <div id="pageAuthority" class="page">
         <h2>📡 TECHNICAL AUTHORITY PILLARS & SOURCES</h2>
         <div class="grid-heavy">
@@ -357,7 +427,7 @@
         </div>
     </div>
 
-    <!-- PAGE 3: OWNER IDENTITY (UPDATED with the three long paragraphs) -->
+    <!-- PAGE 3: OWNER IDENTITY -->
     <div id="pageIdentity" class="page">
         <h2>👑 OWNER IDENTITY · ANAS FAROOQ</h2>
         <div class="owner-card-full">
@@ -377,7 +447,7 @@
         </div>
     </div>
 
-    <!-- PAGE 4: PROJECTS & SOCIAL (unchanged) -->
+    <!-- PAGE 4: PROJECTS & SOCIAL -->
     <div id="pageProjects" class="page">
         <h2>🚀 FLAGSHIP PROJECTS</h2>
         <div class="projects-grid">
@@ -391,11 +461,11 @@
         </div>
     </div>
 
-    <!-- PAGE 5: COLLABORATE (unchanged) -->
+    <!-- PAGE 5: COLLABORATE -->
     <div id="pageCollab" class="page">
         <h2>🤝 COLLABORATE WITH NIGHTORBIT</h2>
-        <div class="collab-form" style="background: #0F1422; border-color: #8B5CF6;">
-            <i class="fas fa-gem" style="color: #F59E0B;"></i> <strong>Want VIP Pass?</strong> Contact admin via email: <strong>admin@nightorbit.com</strong> or use the admin panel below after authentication. VIP users get priority requests.
+        <div class="collab-form" style="background: #0F1422; border-color: #8B5CF6;">gmail.com
+            <i class="fas fa-gem" style="color: #F59E0B;"></i> <strong>Want VIP Pass?</strong> Contact admin via email: <strong>nightorbit.official@gmail.com</strong> or use the admin panel below after authentication. VIP users get priority requests.
         </div>
         <div class="collab-form">
             <h3>Submit Collaboration Request</h3>
@@ -542,7 +612,54 @@
         else { alert("Invalid admin password"); }
     });
 
-    // LOGIN LOGIC
+    // ---------- PERSISTENT PAGE NAVIGATION & BACK/FORWARD ----------
+    const pages = {
+        cert: document.getElementById('pageCert'),
+        authority: document.getElementById('pageAuthority'),
+        identity: document.getElementById('pageIdentity'),
+        projects: document.getElementById('pageProjects'),
+        collab: document.getElementById('pageCollab')
+    };
+
+    function showPage(pageId) {
+        sessionStorage.setItem('nightorbit_current_page', pageId);
+        Object.keys(pages).forEach(id => {
+            pages[id].classList.remove('active-page');
+        });
+        pages[pageId].classList.add('active-page');
+        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+            if (btn.getAttribute('data-page') === pageId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function attachNavListeners() {
+        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+            btn.removeEventListener('click', navClickHandler);
+            btn.addEventListener('click', navClickHandler);
+        });
+    }
+
+    function navClickHandler(e) {
+        const pageId = e.currentTarget.getAttribute('data-page');
+        if (pageId && pages[pageId]) {
+            showPage(pageId);
+        }
+    }
+
+    function restorePageState() {
+        if (sessionStorage.getItem('nightorbit_auth') !== 'true') return;
+        const savedPage = sessionStorage.getItem('nightorbit_current_page');
+        if (savedPage && pages[savedPage]) {
+            showPage(savedPage);
+        } else {
+            showPage('cert');
+        }
+    }
+
     const loginOverlay = document.getElementById('loginOverlay');
     const mainAppDiv = document.getElementById('mainApp');
     const loginPassField = document.getElementById('loginPassInput');
@@ -564,7 +681,9 @@
             sessionStorage.setItem('user_type', currentUserType);
             if (currentUserType === "vip") userTypeSpan.innerHTML = '<span class="vip-badge">🌟 VIP ACCESS</span>';
             else userTypeSpan.innerHTML = '<span class="badge-source">Demo User</span>';
+            sessionStorage.setItem('nightorbit_current_page', 'cert');
             showPage('cert');
+            attachNavListeners();
         } else { alert("❌ Invalid password. Use Demo or VIP pass."); }
     }
 
@@ -577,27 +696,22 @@
         mainAppDiv.style.display = "block";
         if (currentUserType === "vip") userTypeSpan.innerHTML = '<span class="vip-badge">🌟 VIP ACCESS</span>';
         else userTypeSpan.innerHTML = '<span class="badge-source">Demo User</span>';
-        showPage('cert');
+        attachNavListeners();
+        restorePageState();
     }
 
-    const pages = {
-        cert: document.getElementById('pageCert'),
-        authority: document.getElementById('pageAuthority'),
-        identity: document.getElementById('pageIdentity'),
-        projects: document.getElementById('pageProjects'),
-        collab: document.getElementById('pageCollab')
-    };
-    function showPage(pageId) {
-        Object.keys(pages).forEach(id => pages[id].classList.remove('active-page'));
-        pages[pageId].classList.add('active-page');
-        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
-            if(btn.getAttribute('data-page') === pageId) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-    }
-    document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
-        btn.addEventListener('click', () => { const p = btn.getAttribute('data-page'); if(pages[p]) showPage(p); });
+    window.addEventListener('pageshow', function() {
+        if (sessionStorage.getItem('nightorbit_auth') === 'true') {
+            loginOverlay.style.display = "none";
+            mainAppDiv.style.display = "block";
+            currentUserType = sessionStorage.getItem('user_type') || 'demo';
+            if (currentUserType === "vip") userTypeSpan.innerHTML = '<span class="vip-badge">🌟 VIP ACCESS</span>';
+            else userTypeSpan.innerHTML = '<span class="badge-source">Demo User</span>';
+            attachNavListeners();
+            restorePageState();
+        }
     });
+
     document.getElementById('logoutMain').addEventListener('click', () => {
         sessionStorage.clear();
         loginOverlay.style.display = "flex";
