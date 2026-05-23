@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>NIGHTORBIT · Official Authority Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0A0C15;
+            font-family: 'Inter', sans-serif;
+            color: #EDF2FF;
+            line-height: 1.5;
+        }
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #06080fe6;
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: #111622;
+            border: 1px solid #2D3A5E;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 40px -12px black;
+        }
+        .login-card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF, #8B5CF6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .login-input {
+            width: 100%;
+            background: #0F1422;
+            border: 1px solid #2D3A5E;
+            border-radius: 60px;
+            padding: 0.8rem 1.2rem;
+            margin: 0.6rem 0;
+            color: white;
+            font-size: 1rem;
+        }
+        .login-btn {
+            background: #7C3AED;
+            border: none;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+        }
+        .login-btn:hover { background: #6D28D9; }
+        /* Main App */
+        .main-app { display: none; max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+        .modern-nav {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            background: #0F1422; border: 1px solid #232B3E; border-radius: 80px;
+            padding: 0.5rem 1.5rem; margin-bottom: 2rem;
+        }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .nav-btn {
+            background: transparent; border: none; padding: 0.6rem 1.2rem;
+            border-radius: 60px; font-weight: 500; color: #BDD3FF; cursor: pointer;
+        }
+        .nav-btn:hover, .nav-btn.active { background: #7C3AED; color: white; }
+        .logout-nav { background: #1E1A2F; border: 1px solid #4B3B6E; }
+        .page { display: none; animation: fade 0.3s; }
+        .page.active-page { display: block; }
+        @keyframes fade { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; } }
+        
+        /* HEAVY CERTIFICATE STYLES (same as before) */
+        .heavy-cert {
+            background: #0b0e17;
+            border: 2px solid #f5b042;
+            border-radius: 2rem;
+            padding: 2rem;
+            margin: 1rem auto;
+            max-width: 1000px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6), inset 0 0 20px rgba(245,176,66,0.1);
+        }
+        .heavy-cert-header {
+            text-align: center;
+            border-bottom: 2px solid #f5b042;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .heavy-cert-header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #f5b042;
+            text-shadow: 0 0 5px #f5b042;
+        }
+        .heavy-cert-header .sub {
+            color: #cbd5e1;
+            letter-spacing: 2px;
+        }
+        .cert-profile {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: #0f1220;
+            border-radius: 1.5rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2d2a4e;
+        }
+        .cert-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #f5b042;
+            background: #000;
+        }
+        .cert-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .cert-profile-info h2 { color: white; font-size: 1.8rem; font-weight: 800; }
+        .cert-profile-info .role { color: #f5b042; font-weight: 700; }
+        .cert-profile-info .project { color: #8b9cc7; font-size: 0.85rem; }
+        
+        .power-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin: 1.8rem 0;
+        }
+        .power-item {
+            background: #0f1220;
+            border-left: 5px solid #f5b042;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+        }
+        .power-item h3 {
+            color: #f5b042;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .power-item p {
+            color: #cbd5e6;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .cert-footer-heavy {
+            margin-top: 2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid #2d2a4e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .stamp-heavy { color: #f5b042; font-family: monospace; font-weight: bold; }
+        .signature-heavy { text-align: right; color: #f5b042; }
+        .sign-line { width: 180px; height: 2px; background: #f5b042; margin-top: 5px; }
+        
+        /* Grid for authority page - same style but content changed */
+        .grid-heavy {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin: 1rem 0;
+        }
+        .auth-card {
+            background: #111622;
+            border: 1px solid #232B3E;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: 0.2s;
+        }
+        .auth-card:hover { border-color: #7C3AED; transform: translateY(-3px); }
+        .badge-source {
+            background: #0F1422;
+            border: 1px solid #2D3A5E;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-top: 0.8rem;
+        }
+        
+        /* Owner identity cards - same as before but with new text */
+        .owner-card-full {
+            background: #111622;
+            border: 1px solid #232B3E;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: 0.2s;
+        }
+        .owner-card-full:hover { border-color: #7C3AED; transform: translateX(4px); }
+        .owner-card-full h3 {
+            color: #A78BFA;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .owner-card-full p {
+            color: #cbd5e6;
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+        
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .project-item { background: #111622; border: 1px solid #232B3E; border-radius: 1.5rem; padding: 1.5rem; text-align: center; }
+        .project-item a { display: inline-block; background: #0F1422; border: 1px solid #8B5CF6; border-radius: 60px; padding: 0.5rem 1.2rem; text-decoration: none; color: white; font-weight: 500; margin-top: 1rem; transition: 0.2s; }
+        .project-item a:hover { background: #8B5CF6; color: black; }
+        .social-row { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; }
+        .social-heavy { background: #0F1422; border: 1px solid #3B2E5E; border-radius: 60px; padding: 0.7rem 1.6rem; text-decoration: none; color: #E2E8FF; font-weight: 600; display: inline-flex; align-items: center; gap: 0.8rem; }
+        .social-heavy:hover { background: #7C3AED; color: white; }
+        .collab-form, .track-section, .admin-panel {
+            background: #111622; border: 1px solid #232B3E; border-radius: 1.5rem;
+            padding: 1.8rem; margin-bottom: 2rem;
+        }
+        .form-group { margin-bottom: 1rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; background: #0F1422; border: 1px solid #2D3A5E;
+            border-radius: 60px; padding: 0.8rem 1.2rem; color: white;
+        }
+        .form-group textarea { border-radius: 1.2rem; resize: vertical; }
+        .submit-btn { background: #7C3AED; border: none; padding: 0.7rem 1.5rem; border-radius: 60px; font-weight: 600; color: white; cursor: pointer; margin-right: 0.5rem; }
+        .admin-view-btn { background: #2D2A44; }
+        .requests-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .requests-table th, .requests-table td { border-bottom: 1px solid #2D3A5E; padding: 0.75rem; text-align: left; vertical-align: top; }
+        .reply-area { margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .reply-input { background: #0F1422; border: 1px solid #4B3B6E; border-radius: 40px; padding: 0.4rem 0.8rem; color: white; flex:1; }
+        .submissions-panel { max-height: 500px; overflow: auto; margin-top: 1rem; }
+        .vip-badge { background: #B45309; color: #FFE4B5; padding: 0.2rem 0.8rem; border-radius: 40px; font-size: 0.7rem; }
+        footer { text-align: center; margin-top: 3rem; border-top: 1px solid #232B3E; padding-top: 1.5rem; font-size: 0.75rem; }
+        .protected-link-area { margin-top: 1rem; text-align: center; }
+        .protected-link-btn { background: #1E293B; border: 1px solid #8B5CF6; border-radius: 40px; padding: 0.5rem 1rem; cursor: pointer; color: white; }
+        @media (max-width: 700px) { .modern-nav { flex-direction: column; gap: 0.8rem; } .nav-links { justify-content: center; } }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+        <i class="fas fa-shield-alt" style="font-size: 3rem; color: #8B5CF6;"></i>
+        <h2>NIGHTORBIT</h2>
+        <p>Enter Access Password</p>
+        <input type="password" id="loginPassInput" class="login-input" placeholder="Password">
+        <button id="doLoginBtn" class="login-btn"><i class="fas fa-unlock"></i> Authenticate</button>
+        <div style="margin-top: 1rem; font-size: 0.7rem;">Demo Pass: 1122009933 | VIP Pass: NightOrbit@@!!</div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp" class="main-app">
+    <div class="modern-nav">
+        <div><i class="fas fa-dragon" style="color:#8B5CF6;"></i> <strong>NIGHTORBIT · OFFICIAL</strong> <span id="userTypeBadge" style="margin-left: 0.5rem;"></span></div>
+        <div class="nav-links">
+            <button class="nav-btn" data-page="cert">📜 Certificate</button>
+            <button class="nav-btn" data-page="authority">⚙️ Technical Authority</button>
+            <button class="nav-btn" data-page="identity">👤 Owner Identity</button>
+            <button class="nav-btn" data-page="projects">🚀 Projects & Social</button>
+            <button class="nav-btn" data-page="collab">🤝 Collaborate</button>
+            <button id="logoutMain" class="nav-btn logout-nav">🔒 Exit</button>
+        </div>
+    </div>
+
+    <!-- PAGE 1: CERTIFICATE (REVISED - Third-party issued, no self-claim) -->
+    <div id="pageCert" class="page active-page">
+        <div class="heavy-cert">
+            <div class="heavy-cert-header">
+                <h1>⚡ NIGHTORBIT ⚡</h1>
+                <div class="sub">OFFICIAL AUTHORITY CERTIFICATE</div>
+                <div style="font-size: 0.8rem; color: #cbd5e1;">Issued by the Nightorbit Security Council & Technical Governance Board</div>
+            </div>
+            <div class="cert-profile">
+                <div class="cert-avatar">
+                    <img src="Screenshot_20260506-034930_2.jpg" alt="Anas Farooq" id="profileImg">
+                </div>
+                <div class="cert-profile-info">
+                    <h2>ANAS FAROOQ</h2>
+                    <div class="role">Primary Owner · Lead Developer · System Administrator</div>
+                    <div class="project">NIGHTORBIT (GYIDI) · ABSOLUTE GOVERNANCE</div>
+                </div>
+            </div>
+            <div class="power-list">
+                <div class="power-item"><h3><i class="fas fa-database"></i> FIREBASE DATA SOVEREIGNTY</h3><p>Anas Farooq is hereby granted absolute, irrevocable authority to save, retrieve, delete, and manage any data within Firebase. Full control over real-time databases, Firestore, and storage. Every user's email, login timestamp, and activity log is permanently recorded in the owner's bio admin panel. No data is beyond reach.</p></div>
+                <div class="power-item"><h3><i class="fas fa-user-secret"></i> BIO ADMIN PANEL & REAL-TIME MONITORING</h3><p>Complete command over a private bio admin panel where every visitor's Gmail, exact login time, IP address, and behavior is stored. Can view, search, and track any user's history instantly. Continuous surveillance of all platform activity – no action goes unnoticed.</p></div>
+                <div class="power-item"><h3><i class="fas fa-gavel"></i> INSTANT REVOCATION & LEGAL ACTION</h3><p>If any user violates Nightorbit policies or engages in malicious activities, the owner has the absolute right to immediately remove their Gmail from the system and permanently block access. Furthermore, evidence can be handed over to law enforcement (police) to ensure project safety and deter hackers. Zero tolerance for policy breaches.</p></div>
+                <div class="power-item"><h3><i class="fas fa-shield-haltered"></i> HACKER PROTECTION & USER SURVEILLANCE</h3><p>24/7 advanced monitoring of every user session. Any suspicious or hacking attempt is instantly detected, logged, and can be neutralized. Owner holds the power to blacklist malicious entities globally and protect the ecosystem from any threat.</p></div>
+                <div class="power-item"><h3><i class="fas fa-envelope"></i> OTP VERIFICATION & IDENTITY CONTROL</h3><p>Full authority to send OTP (One-Time Password) to any Gmail address for identity verification. This ensures that only legitimate users gain access. Integrated OTP system allows the owner to validate new users and prevent fake or harmful logins.</p></div>
+                <div class="power-item"><h3><i class="fas fa-code-branch"></i> UNLIMITED PROJECT CREATION</h3><p>Absolute power to develop, deploy, and manage any project of any scale – from AI tools to complex dashboards, real-time systems, or global platforms. No limitations, no external permissions required.</p></div>
+            </div>
+            <div class="cert-footer-heavy">
+                <div class="stamp-heavy"><i class="fas fa-stamp"></i> NIGHTORBIT IMPERIAL COUNCIL · ETERNAL VALIDITY</div>
+                <div class="signature-heavy"><div>For the Council</div><div class="sign-line"></div><div style="font-size: 0.7rem;">24‑JAN‑2026 · Machine‑verifiable via logs</div></div>
+            </div>
+            <div class="badge-source" style="display: block; text-align: center; margin-top: 1rem;">VERIFIED · BLOCKCHAIN HASH 0x7E3F…A9C2 · 24-JAN-2026</div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: TECHNICAL AUTHORITY (UPDATED with certificate's 6 powers) -->
+    <div id="pageAuthority" class="page">
+        <h2>📡 TECHNICAL AUTHORITY PILLARS & SOURCES</h2>
+        <div class="grid-heavy">
+            <div class="auth-card">
+                <i class="fas fa-database" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>Firebase Data Sovereignty</h3>
+                <p>Holds absolute, irrevocable authority to save, retrieve, delete, and manage any data within Firebase. Full control over real-time databases, Firestore, and storage. Every user's email, login timestamp, and activity log is permanently recorded in the owner's bio admin panel. No data is beyond reach.</p>
+                <div class="badge-source">Firebase Console Admin · GCP IAM Owner</div>
+            </div>
+            <div class="auth-card">
+                <i class="fas fa-user-secret" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>Bio Admin Panel & Real-Time Monitoring</h3>
+                <p>Complete command over a private bio admin panel where every visitor's Gmail, exact login time, IP address, and behavior is stored. Can view, search, and track any user's history instantly. Continuous surveillance of all platform activity – no action goes unnoticed.</p>
+                <div class="badge-source">Firestore indexes · Real-time triggers</div>
+            </div>
+            <div class="auth-card">
+                <i class="fas fa-gavel" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>Instant Revocation & Legal Action</h3>
+                <p>If any user violates Nightorbit policies or engages in malicious activities, the owner has the absolute right to immediately remove their Gmail from the system and permanently block access. Furthermore, evidence can be handed over to law enforcement (police) to ensure project safety and deter hackers. Zero tolerance for policy breaches.</p>
+                <div class="badge-source">Security Rules · HSM backup keys</div>
+            </div>
+            <div class="auth-card">
+                <i class="fas fa-shield-haltered" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>Hacker Protection & User Surveillance</h3>
+                <p>24/7 advanced monitoring of every user session. Any suspicious or hacking attempt is instantly detected, logged, and can be neutralized. Owner holds the power to blacklist malicious entities globally and protect the ecosystem from any threat.</p>
+                <div class="badge-source">Deep-core monitoring · Global blacklist</div>
+            </div>
+            <div class="auth-card">
+                <i class="fas fa-envelope" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>OTP Verification & Identity Control</h3>
+                <p>Full authority to send OTP (One-Time Password) to any Gmail address for identity verification. This ensures that only legitimate users gain access. Integrated OTP system allows the owner to validate new users and prevent fake or harmful logins.</p>
+                <div class="badge-source">Firebase Auth Admin SDK · OTP service</div>
+            </div>
+            <div class="auth-card">
+                <i class="fas fa-code-branch" style="font-size: 2rem; color:#A78BFA;"></i>
+                <h3>Unlimited Project Creation</h3>
+                <p>Absolute power to develop, deploy, and manage any project of any scale – from AI tools to complex dashboards, real-time systems, or global platforms. No limitations, no external permissions required.</p>
+                <div class="badge-source">Full-stack authority · No oversight</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: OWNER IDENTITY (UPDATED with the three long paragraphs) -->
+    <div id="pageIdentity" class="page">
+        <h2>👑 OWNER IDENTITY · ANAS FAROOQ</h2>
+        <div class="owner-card-full">
+            <h3>▸ 2.1 Lead Developer Excellence</h3>
+            <p>Anas Farooq is the visionary lead developer behind Nightorbit, recognized for mastering high‑level system logic and terminal simulations. With a focus on performance and security, he ensures every protocol meets global engineering standards.</p>
+            <div class="badge-source">👤 Credentials: Verified GitHub (nightorbit), Firebase Certified Specialist, Google Cloud Architect. Cryptographically linked to commit history and admin logs.</div>
+        </div>
+        <div class="owner-card-full">
+            <h3>▸ 2.2 Master Administrative Governance</h3>
+            <p>As the primary owner and lead admin, Anas Farooq holds total governance over the Nightorbit project. He is the final decision‑maker for all technical certifications, official releases, and the overarching digital landscape of the platform.</p>
+            <div class="badge-source">👤 Source: Firebase Owner role, GitHub Admin, all service tokens rotated exclusively by owner.</div>
+        </div>
+        <div class="owner-card-full">
+            <h3>▸ 2.3 Supreme Technical Authority Statement</h3>
+            <p>This document serves as an official verification of Anas Farooq's technical supremacy within the Nightorbit domain. His expertise in full‑stack development and security architecture remains the core foundation of the system's operational success.</p>
+            <div class="badge-source">👤 Verification: GitHub Pages deployment logs, Firebase audit trails, Google Search Console ownership. Last renewed: 24‑JAN‑2026.</div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: PROJECTS & SOCIAL (unchanged) -->
+    <div id="pageProjects" class="page">
+        <h2>🚀 FLAGSHIP PROJECTS</h2>
+        <div class="projects-grid">
+            <div class="project-item"><i class="fas fa-store" style="font-size: 2rem;"></i><h3>My-Market</h3><p>Open commerce platform</p><a href="https://nightorbit.github.io/My-Market/" target="_blank">Open Platform →</a></div>
+            <div class="project-item"><i class="fas fa-palette" style="font-size: 2rem;"></i><h3>Ap-Logo-Generator</h3><p>AI vector suite</p><a href="https://nightorbit.github.io/Ap-Logo-Generator/" target="_blank">Launch Tool →</a></div>
+            <div class="project-item"><i class="fas fa-birthday-cake" style="font-size: 2rem;"></i><h3>Birthday Card Generator</h3><p>AR e‑cards</p><a href="https://nightorbit.github.io/Happy-Birthday-Card-Generator/" target="_blank">Create Card →</a></div>
+        </div>
+        <div class="social-row">
+            <a href="https://github.com/nightorbit" target="_blank" class="social-heavy"><i class="fab fa-github"></i> GitHub / Nightorbit</a>
+            <a href="https://www.instagram.com/nightorbit.official/" target="_blank" class="social-heavy"><i class="fab fa-instagram"></i> Instagram Official</a>
+        </div>
+    </div>
+
+    <!-- PAGE 5: COLLABORATE (unchanged) -->
+    <div id="pageCollab" class="page">
+        <h2>🤝 COLLABORATE WITH NIGHTORBIT</h2>
+        <div class="collab-form" style="background: #0F1422; border-color: #8B5CF6;">
+            <i class="fas fa-gem" style="color: #F59E0B;"></i> <strong>Want VIP Pass?</strong> Contact admin via email: <strong>admin@nightorbit.com</strong> or use the admin panel below after authentication. VIP users get priority requests.
+        </div>
+        <div class="collab-form">
+            <h3>Submit Collaboration Request</h3>
+            <form id="collabForm">
+                <div class="form-group"><input type="text" id="fullName" placeholder="Full Name *" required></div>
+                <div class="form-group"><input type="email" id="emailAddr" placeholder="Email (must be @gmail.com) *" required></div>
+                <div class="form-group"><input type="tel" id="phoneNum" placeholder="Contact Number (11 digits) *" required></div>
+                <div class="form-group"><input type="text" id="addressLine" placeholder="Address / Location"></div>
+                <div class="form-group"><textarea rows="2" id="collabMsg" placeholder="Why collaborate?"></textarea></div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Request</button>
+            </form>
+        </div>
+        <div class="track-section">
+            <h3>🔍 Track Your Request Status</h3>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <input type="email" id="trackEmail" placeholder="Enter your Gmail" style="flex:1; background:#0F1422; border:1px solid #2D3A5E; border-radius:60px; padding:0.7rem;">
+                <button id="trackBtn" class="submit-btn" style="background:#3B2E5E;">Search</button>
+            </div>
+            <div id="trackResult" style="margin-top: 1rem;"></div>
+        </div>
+        <div class="admin-panel">
+            <h3>🔐 Admin Control Center</h3>
+            <input type="password" id="adminPassInput" placeholder="Admin Password" style="background:#0F1422; border:1px solid #2D3A5E; border-radius:60px; padding:0.7rem; width:200px;">
+            <button id="unlockAdminBtn" class="submit-btn admin-view-btn">Unlock Admin</button>
+            <div id="adminContent" style="display: none; margin-top: 1.5rem;">
+                <div id="adminRequestsList" class="submissions-panel"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div>ACTIVE SESSION · VERIFIED AUTHORITY · SYSTEM STAMP: 24-JAN-2026</div>
+        <div class="protected-link-area">
+            <button id="protectedLinkBtn" class="protected-link-btn"><i class="fas fa-link"></i> Access Special Web (Favorite)</button>
+            <div id="protectedLinkReveal" style="margin-top: 0.5rem;"></div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // ---------- STORAGE ----------
+    let requests = JSON.parse(localStorage.getItem('nightorbit_collab_requests')) || [];
+    function saveRequests() { localStorage.setItem('nightorbit_collab_requests', JSON.stringify(requests)); }
+
+    let currentUserType = null;
+
+    function validateForm(email, phone) {
+        if (!email.endsWith("@gmail.com")) return "Email must be @gmail.com";
+        if (!/^\d{11}$/.test(phone)) return "Phone number must be exactly 11 digits";
+        return null;
+    }
+
+    const collabForm = document.getElementById('collabForm');
+    collabForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('emailAddr').value.trim();
+        const phone = document.getElementById('phoneNum').value.trim();
+        const address = document.getElementById('addressLine').value.trim();
+        const message = document.getElementById('collabMsg').value.trim();
+        const validationErr = validateForm(email, phone);
+        if (validationErr) { alert(validationErr); return; }
+        if (!name) { alert("Full name required"); return; }
+        const newReq = { id: Date.now(), name, email, phone, address: address || "-", message: message || "-", userType: currentUserType === "vip" ? "VIP" : "Demo", createdAt: new Date().toLocaleString(), replies: [], status: "waiting" };
+        requests.push(newReq);
+        saveRequests();
+        alert("✅ Request sent! You can track using your email.");
+        collabForm.reset();
+        if (document.getElementById('adminContent') && document.getElementById('adminContent').style.display === 'block') renderAdminPanel();
+    });
+
+    document.getElementById('trackBtn').addEventListener('click', () => {
+        const email = document.getElementById('trackEmail').value.trim();
+        if (!email) { alert("Enter email"); return; }
+        const userRequests = requests.filter(r => r.email === email);
+        const trackDiv = document.getElementById('trackResult');
+        if (userRequests.length === 0) { trackDiv.innerHTML = '<div class="badge-source">📭 No requests found for this email.</div>'; return; }
+        let html = `<div style="background:#0F1422; border-radius:1rem; padding:1rem;"><h4>Your Requests (${userRequests.length})</h4>`;
+        userRequests.forEach(req => {
+            html += `<div style="border-left: 3px solid #8B5CF6; margin:1rem 0; padding:0.5rem 1rem; background:#0A0D18;">
+                        <strong>${escapeHtml(req.name)}</strong> <span class="vip-badge" style="background:#2D2A44;">${req.userType}</span><br>
+                        <small>📅 ${req.createdAt} | Status: ${req.status}</small><br>
+                        <p><strong>Message:</strong> ${req.message}</p>`;
+            if (req.replies && req.replies.length) {
+                html += `<div><strong>Admin Replies:</strong>`;
+                req.replies.forEach(reply => { html += `<div style="background:#1E1A3A; margin-top:0.3rem; padding:0.4rem; border-radius:0.8rem;">📩 ${reply.replyText} <br><span style="font-size:0.7rem;">- ${reply.adminName} on ${reply.date}</span></div>`; });
+                html += `</div>`;
+            } else { html += `<div><em>⏳ Waiting for admin reply...</em></div>`; }
+            html += `</div>`;
+        });
+        html += `</div>`;
+        trackDiv.innerHTML = html;
+    });
+
+    function renderAdminPanel() {
+        const container = document.getElementById('adminRequestsList');
+        if (!container) return;
+        if (requests.length === 0) { container.innerHTML = '<div>No collaboration requests yet.</div>'; return; }
+        let html = `<table class="requests-table"><thead><tr><th>Name/Email</th><th>Phone</th><th>Type</th><th>Message</th><th>Replies</th><th>Actions</th></tr></thead><tbody>`;
+        requests.forEach((req) => {
+            html += `<tr>
+                        <td>${escapeHtml(req.name)}<br><small>${escapeHtml(req.email)}</small><br><small>${escapeHtml(req.address)}</small></td>
+                        <td>${escapeHtml(req.phone)}</span></td>
+                        <td><span class="vip-badge" style="background:${req.userType==='VIP'?'#B45309':'#2D2A44'}">${req.userType}</span></td>
+                        <td>${escapeHtml(req.message)}<br><small>📅 ${req.createdAt}</small></td>
+                        <td><div id="replies-${req.id}">`;
+            if (req.replies && req.replies.length) {
+                req.replies.forEach(r => { html += `<div style="font-size:0.7rem; background:#1E1A3A; margin-bottom:0.3rem; padding:0.2rem;">🗣️ ${escapeHtml(r.replyText)}<br>- ${r.adminName} ${r.date}</div>`; });
+            } else { html += `<em>No replies yet</em>`; }
+            html += `</div><div class="reply-area"><input type="text" id="replyInput-${req.id}" class="reply-input" placeholder="Type reply..."><button class="submit-btn" style="padding:0.3rem 1rem;" onclick="sendReply(${req.id})">Reply</button></div></td>
+                        <td><button class="submit-btn admin-view-btn" style="background:#991b1b;" onclick="deleteRequest(${req.id})">Delete</button></td>
+                    </tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    window.sendReply = function(reqId) {
+        const replyText = document.getElementById(`replyInput-${reqId}`).value.trim();
+        if (!replyText) { alert("Enter reply text"); return; }
+        const reqIndex = requests.findIndex(r => r.id === reqId);
+        if (reqIndex !== -1) {
+            if (!requests[reqIndex].replies) requests[reqIndex].replies = [];
+            requests[reqIndex].replies.push({ replyText: replyText, adminName: "Admin (Anas Farooq)", date: new Date().toLocaleString() });
+            requests[reqIndex].status = "replied";
+            saveRequests();
+            renderAdminPanel();
+        }
+    };
+
+    window.deleteRequest = function(reqId) {
+        if (confirm("Delete this request permanently?")) {
+            requests = requests.filter(r => r.id !== reqId);
+            saveRequests();
+            renderAdminPanel();
+        }
+    };
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    document.getElementById('unlockAdminBtn').addEventListener('click', () => {
+        const pass = document.getElementById('adminPassInput').value;
+        if (pass === "AdminAdmin!@!@") { document.getElementById('adminContent').style.display = "block"; renderAdminPanel(); }
+        else { alert("Invalid admin password"); }
+    });
+
+    // LOGIN LOGIC
+    const loginOverlay = document.getElementById('loginOverlay');
+    const mainAppDiv = document.getElementById('mainApp');
+    const loginPassField = document.getElementById('loginPassInput');
+    const loginButton = document.getElementById('doLoginBtn');
+    const userTypeSpan = document.getElementById('userTypeBadge');
+
+    function setLogin(pass) {
+        if (pass === "1122009933") { currentUserType = "demo"; return true; }
+        if (pass === "NightOrbit@@!!") { currentUserType = "vip"; return true; }
+        return false;
+    }
+
+    function doLogin() {
+        const entered = loginPassField.value.trim();
+        if (setLogin(entered)) {
+            loginOverlay.style.display = "none";
+            mainAppDiv.style.display = "block";
+            sessionStorage.setItem('nightorbit_auth', 'true');
+            sessionStorage.setItem('user_type', currentUserType);
+            if (currentUserType === "vip") userTypeSpan.innerHTML = '<span class="vip-badge">🌟 VIP ACCESS</span>';
+            else userTypeSpan.innerHTML = '<span class="badge-source">Demo User</span>';
+            showPage('cert');
+        } else { alert("❌ Invalid password. Use Demo or VIP pass."); }
+    }
+
+    loginButton.addEventListener('click', doLogin);
+    loginPassField.addEventListener('keypress', (e) => { if(e.key === 'Enter') doLogin(); });
+
+    if (sessionStorage.getItem('nightorbit_auth') === 'true') {
+        currentUserType = sessionStorage.getItem('user_type') || 'demo';
+        loginOverlay.style.display = "none";
+        mainAppDiv.style.display = "block";
+        if (currentUserType === "vip") userTypeSpan.innerHTML = '<span class="vip-badge">🌟 VIP ACCESS</span>';
+        else userTypeSpan.innerHTML = '<span class="badge-source">Demo User</span>';
+        showPage('cert');
+    }
+
+    const pages = {
+        cert: document.getElementById('pageCert'),
+        authority: document.getElementById('pageAuthority'),
+        identity: document.getElementById('pageIdentity'),
+        projects: document.getElementById('pageProjects'),
+        collab: document.getElementById('pageCollab')
+    };
+    function showPage(pageId) {
+        Object.keys(pages).forEach(id => pages[id].classList.remove('active-page'));
+        pages[pageId].classList.add('active-page');
+        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+            if(btn.getAttribute('data-page') === pageId) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+    document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => { const p = btn.getAttribute('data-page'); if(pages[p]) showPage(p); });
+    });
+    document.getElementById('logoutMain').addEventListener('click', () => {
+        sessionStorage.clear();
+        loginOverlay.style.display = "flex";
+        mainAppDiv.style.display = "none";
+        loginPassField.value = "";
+    });
+
+    const protectedBtn = document.getElementById('protectedLinkBtn');
+    const revealDiv = document.getElementById('protectedLinkReveal');
+    protectedBtn.addEventListener('click', () => {
+        const pwd = prompt("Enter special password to access favorite web:");
+        if (pwd === "adminfacweb@@!!") {
+            window.open('https://nightorbit.github.io/Happy-Birthday-Meri-Jan/', '_blank');
+            revealDiv.innerHTML = '<span style="color:#A78BFA;">🔓 Access granted! Opening favorite web...</span>';
+            setTimeout(() => { revealDiv.innerHTML = ''; }, 3000);
+        } else { alert("Access denied: Invalid password."); }
+    });
+</script>
+</body>
+</html>
